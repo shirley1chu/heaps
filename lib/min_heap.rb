@@ -8,16 +8,17 @@ class HeapNode
 end
 
 class MinHeap
-
   def initialize
     @store = []
   end
 
   # This method adds a HeapNode instance to the heap
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(logn)
+  # Space Complexity: O(1)
   def add(key, value = key)
-    raise NotImplementedError, "Method not implemented yet..."
+    @store.push(HeapNode.new(key, value))
+    new_node_index = @store.length - 1
+    heap_up(new_node_index)
   end
 
   # This method removes and returns an element from the heap
@@ -27,7 +28,6 @@ class MinHeap
   def remove()
     raise NotImplementedError, "Method not implemented yet..."
   end
-
 
   # Used for Testing
   def to_s
@@ -39,7 +39,7 @@ class MinHeap
     end
 
     output += @store.last.value + "]"
-      
+
     return output
   end
 
@@ -55,13 +55,23 @@ class MinHeap
   # This helper method takes an index and
   #  moves it up the heap, if it is less than it's parent node.
   #  It could be **very** helpful for the add method.
-  # Time complexity: ?
-  # Space complexity: ?
+  # Time complexity: O(logn)
+  # Space complexity: O(1)
   def heap_up(index)
-    
+    parent_index = (index - 1) / 2
+    return if parent_index < 0
+    parent = @store[parent_index]
+    current = @store[index]
+
+    while parent_index >= 0 && parent.key > current.key
+      swap(index, parent_index)
+      index = parent_index
+      parent_index = (index - 1) / 2
+      parent = @store[parent_index]
+    end
   end
 
-  # This helper method takes an index and 
+  # This helper method takes an index and
   #  moves it up the heap if it's smaller
   #  than it's parent node.
   def heap_down(index)
