@@ -23,10 +23,14 @@ class MinHeap
 
   # This method removes and returns an element from the heap
   #   maintaining the heap structure
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(logn)
+  # Space Complexity: O(1)
   def remove()
-    raise NotImplementedError, "Method not implemented yet..."
+    return if @store.length == 0
+    swap(0, @store.length - 1)
+    removed_element = @store.pop
+    heap_down(0)
+    return removed_element.value
   end
 
   # Used for Testing
@@ -44,10 +48,10 @@ class MinHeap
   end
 
   # This method returns true if the heap is empty
-  # Time complexity: ?
-  # Space complexity: ?
+  # Time complexity: O(1)
+  # Space complexity: O(1)
   def empty?
-    raise NotImplementedError, "Method not implemented yet..."
+    return @store[0].nil?
   end
 
   private
@@ -75,7 +79,30 @@ class MinHeap
   #  moves it up the heap if it's smaller
   #  than it's parent node.
   def heap_down(index)
-    raise NotImplementedError, "Method not implemented yet..."
+    while index < @store.length
+      left_idx = index * 2 + 1
+      right_idx = index * 2 + 2
+      child_index = nil
+      left = @store[left_idx]
+      right = @store[right_idx]
+
+      if left && right
+        child_index = left.key < right.key ? left_idx : right_idx
+        if @store[child_index].key < @store[index].key
+          swap(index, child_index)
+          index = child_index
+        else
+          return
+        end
+      elsif left && !right
+        return unless left.key < @store[index].key
+        child_index = left_idx
+        swap(index, child_index)
+        index = child_index
+      else
+        return
+      end
+    end
   end
 
   # If you want a swap method... you're welcome
