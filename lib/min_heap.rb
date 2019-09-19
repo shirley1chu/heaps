@@ -1,13 +1,15 @@
 class HeapNode
   attr_reader :key, :value
 
-  def initialize(key, value)
+  def initialize(key, value = key)
     @key = key
     @value = value
   end
 end
 
 class MinHeap
+  attr_writer :store
+
   def initialize
     @store = []
   end
